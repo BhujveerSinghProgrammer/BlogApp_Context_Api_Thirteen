@@ -1,0 +1,111 @@
+Q1:-How to create react app:-
+Ans:- Open VS Code-->Terminal-->go to folder (cd myapp)-->npm install create-react-app myapp
+-->npx create-react-app myapp  -->npm run start
+
+Q1.2 How to install dependencies?
+Ans:-PS D:\clone\MorningEcommercereactClsThird> npm i @mdi/react react@18.3.1
+     PS D:\clone\MorningEcommercereactClsThird>npm install
+  
+
+
+Q11.HOW TO CLONE Project from GitHub to VSCode.
+
+steps:-
+A) go to services(.msc)-->openSSH Authentication Agent(startup Type=Automatic)-->ok-->start service
+
+
+steps:-
+(B)
+1.create a folder and with this folder open VS Code.
+2.go to github-->repository-->select a repository-->code-->select SSH-->Copy url to clipboard-->
+3.run following command in Terminal
+:-PS D:\clone> git clone git@github.com:BhujveerSinghProgrammer/MorningEcommercereactClsThird.git
+
+4.if not cloned then setup for SSH Key:- Make sure you have an SSH key set up on your local machine and that it is added to your GitHub account:
+5.Generate SSH Key:-
+PS D:\clone> ssh-keygen -t ed25519 -C "bsjaint9354190@gmail.com"    + enter (3 times enter for not giving any values)
+
+6.PS D:\clone> ssh-add C:\Users\bhujv\.ssh\id_ed25519
+output:-
+Identity added: C:\Users\bhujv\.ssh\id_ed25519 (bsjaint9354190@gmail.com)
+
+7.PS D:\clone> ls  C:\Users\bhujv\.ssh\    (check for files)
+
+
+8.PS D:\clone> Get-Content C:\Users\bhujv\.ssh\id_ed25519.pub | Set-Clipboard
+
+Steps(C):- 
+1.Go to GitHub account-->setting-->go to SSH Key and GPG Keys-->add new SSH key-->paste the key-->save
+2.Test SSH Connection:-
+PS D:\clone> ssh -T git@github.com
+
+
+Step (D):-
+1.go to GitHub account-->go to repo-->setting-->code-->SSH-->Copy url
+2.PS D:\clone> git clone git@github.com:BhujveerSinghProgrammer/MorningEcommercereactClsThird.git
+
+3.
+
+PS D:\clone> cd MorningEcommercereactClsThird   (go to project folder)         
+PS D:\clone\MorningEcommercereactClsThird> npm start
+
+4.
+if not starting due to some package.json dependencies then install dependencies:-
+
+PS D:\clone\MorningEcommercereactClsThird> npm i react-scripts@5.0.1 react-dom@18.3.1 react@18.3.1 web-vitals@2.1.4
+
+
+//*******************************************************************************************//
+Q12.How to upload project to new branch on github?
+Ans:- Go to source control in vs code-->source control repository-->create new branch-->then publish
+
+
+Q13.How to fetch/clone particular branch from github?
+Ans:- Rc on a folder-->Open Git Bash Here-->$ git clone -b Fifth https://github.com/BhujveerSinghProgrammer/MorningEcommercereactClsThird.git
+
+
+
+Q14:- //How to upload project to github from vs code.
+Step 1:-
+1.check for git version installed on your pc.
+C:\Users\USER>git -v
+git version 2.46.2.windows.1
+
+Step:-2
+1.Open prject in vs code
+2.go to terminal-->git init
+3.git add . //add space after add.
+4.git commit -am "initial commit"
+5.git remote add origin https://github.com/BhujveerSinghProgrammer/dummy.git
+5.git push origin master
+
+
+…or create a new repository on the command line
+__//*********************************************************************************************//__________________________________________________________
+git init
+git add . //add space after add.
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/BhujveerSinghProgrammer/dummy.git
+git push -u origin main
+
+
+…or push an existing repository from the command line
+____________________________________________________________
+//*********************************************************************************************//
+git remote add origin https://github.com/BhujveerSinghProgrammer/dummy.git
+git branch -M main
+git push -u origin main
+
+//*********************************************************************************************//
+
+Important Command:- 
+->if you already have created a origin to your project to github then :-
+->if your project is bound with other origin and you want to upload your project in new repository
+
+
+git remote remove origin
+git remote add origin https://github.com/BhujveerSinghProgrammer/MasterPageInReactjsblogappTwo.git
+git push -u origin main
+
+___________End.....?

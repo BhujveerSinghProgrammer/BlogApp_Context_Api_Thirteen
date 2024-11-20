@@ -1,0 +1,48 @@
+//............................................................................................
+//............................................................................................
+Q1.? Imp Note:-
+if we create a function like given below:-
+-->
+const [post, setPost] = useState({
+    title: "",
+    content: "",
+    categoryid: ""
+  });
+-->
+ const contentFieldChanged = (newContent) => {
+    setPost({ ...post, content: newContent });
+  };
+-->
+    <div className="my-3">
+              <Label for="content">Post Content</Label>
+              <JoditEditor
+                ref={editor}
+                value={post.content}
+                tabIndex={1}
+                onChange={contentFieldChanged} // Use onBlur for better compatibility
+              />
+            </div>
+
+Note:- here we are using onChange={contentFieldChanged} ,in this we are not passing any event,but in given code we are passing as event as 'newContent' ,why?
+
+const contentFieldChanged = (newContent) => {
+    setPost({ ...post, content: newContent });
+  };
+
+its becoz when we use  onChange={contentFieldChanged},it automaticaly takes an event,you can also pass but it will take automaticaly if you dont pass.
+//............................................................................................
+//............................................................................................
+
+Q2.? How to add a field into already created json object like given below:-
+Ans:=
+const [post, setPost] = useState({
+    title: "",
+    content: "",
+    categoryid: ""
+  });
+
+
+  post['userId']=user.id;  //adding a field to the post object
+
+
+

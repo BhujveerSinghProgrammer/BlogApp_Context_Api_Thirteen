@@ -1,0 +1,98 @@
+Q1.//Important Note:- if we have a count value and we want to loop through that then what will we do?
+Ans:- first we will make this array and then will loop through this like given below:-
+we have postContent.TotalElements=21
+
+//For printing
+{
+[...Array(postContent.TotalPages)].map((item,index)=>(index))
+}
+
+//for using in pagination
+
+
+{
+[...Array(postContent.TotalPages)].map((item,index)=>(
+  <PaginationItem>
+    <PaginationLink>
+    {index+1}
+    </PaginationLink>
+  </PaginationItem>
+  ))
+}
+
+
+
+Q2.?How to disable the previous button and active current page.
+
+Ans:-
+==>disabling previous button in pagination:- it will disable if {postContent.PageNumber==1}
+
+
+
+ <PaginationItem disabled={postContent.PageNumber==1}>
+    <PaginationLink previous>
+
+    </PaginationLink>
+  </PaginationItem>
+
+==>Active current page:- it will be active if {index==postContent.PageNumber}
+
+{
+[...Array(postContent.TotalPages)].map((item,index)=>(
+  <PaginationItem active={index==postContent.PageNumber}  key={index} >
+    <PaginationLink>
+    {index+1}
+    </PaginationLink>
+  </PaginationItem>
+  ))
+}
+
+Q3.? How to pass parameters to a function new way?
+Ans:-
+
+
+const changePage=(PageNumberInput=0,PageSizeInput=3)=>
+{
+  loadAllPostsByPageNumberandPageSize(PageNumberInput,PageSizeInput).then(data=>{
+ setPostContent(data);
+  }).catch(error=>{
+    toast.error("Error in Loading Posts Pagewise");
+  })
+}
+
+onClick={()=>{changePage(index,5)}} 
+
+or
+Note:- if we will not pass any value to PageSizeInput as 5 then it will automatically take the default value which is set to 5
+
+
+onClick={()=>{changePage(index)}} 
+
+
+Q4.?How to show database's table's html?
+Ans:- you can use dangerouslySetInnerHTML to do this.
+
+import React from 'react'
+import { Button, Card, CardBody, CardText } from 'reactstrap'
+
+function Posts({ post = { Title: "This is Default Post Title", Content: "This is Default Content" } }) {
+  return (
+    <Card className='border-0 shadow-sm mb-3'>
+      <CardBody>
+        <h4>{post.Title}</h4>
+        {/* <CardText>{post.Content}</CardText> */}
+  <CardText dangerouslySetInnerHTML={{ __html:post.Content.substring(0,60)+'..'}}>
+    {/* {post.Content.substring(0,30)}... */}
+    </CardText>
+        <div>
+          <Button>Read More..</Button>
+        </div>
+      </CardBody>
+    </Card>
+  );
+}
+
+export default Posts;
+
+
+Q5.?

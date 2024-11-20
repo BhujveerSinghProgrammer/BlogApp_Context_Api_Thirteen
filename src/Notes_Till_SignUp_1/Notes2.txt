@@ -1,0 +1,34 @@
+======================>Routing:- if we enter with /login then login page/component should open
+
+step 1:- npm install react-router-dom
+
+step 2:- App.js
+
+import {BrowserRouter,Routes,Route} from 'react-router-dom'
+<BrowserRouter>
+   <Routes>
+<Route path='home' element="<h1>this is home page</h1>" />
+
+   </Routes>
+  </BrowserRouter>
+
+========================>Routing with real component/pages
+App.js:-
+
+
+import Home from './pages/Home';
+import Signup from './pages/Signup';
+import Login from './pages/Login';
+import About from './pages/About';
+
+  <BrowserRouter>
+   <Routes>
+  <Route path='home' element={<Home/>} />
+  <Route path='/login' element={<Login/>} />
+  <Route path='/signup' element={<Signup/>} />
+  <Route path='/about' element={<About/>} />
+   </Routes>
+  </BrowserRouter>
+
+
+===========================>

@@ -1,0 +1,132 @@
+//Note:-New Feed steps without pagination:-
+
+.....................................................................................................................
+.....................................................................................................................
+src-->components-->NewFeed.jsx:-
+import React, { useState } from 'react'
+import { useEffect } from 'react';
+import { loadAllPosts } from '../services/post-service';
+import { Row,Col } from 'reactstrap';
+import Posts from './Posts';
+
+
+function NewFeed() 
+{
+const[postContent,setPostContent]=useState(null);
+
+  useEffect(()=>{
+  //load all the posts from
+  loadAllPosts().then((data)=>{
+    console.log(data);
+    setPostContent(data);
+  }).catch(error=>{
+    console.log(error);
+  })
+},[]
+);
+
+  return (
+
+   <div className="container-fluid">
+<Row>
+  <Col md={{
+    size:10,
+    offset:1
+  }} >
+    {/* {JSON.stringify(postContent)} */}
+    <h1>Blogs Count ({postContent?.TotalElements})</h1>
+  
+   
+  {
+    postContent?.Contents?.map((post)=>(
+      <Posts post={post} key={post.Id} />
+    ))
+  }
+
+
+  </Col>
+</Row>
+   </div>
+
+   
+  )
+}
+
+export default NewFeed
+
+
+.....................................................................................................................................
+.....................................................................................................................................
+Home.jsx:-
+
+import { useEffect } from "react";
+import Base from "../components/Base";
+import NewFeed from "../components/NewFeed";
+import { Container } from "reactstrap";
+
+const Home=()=>{
+
+
+  return (
+   <Base>
+   <Container className="mt-3">
+        <NewFeed/>
+   </Container>
+   
+   </Base>
+  )
+}
+
+export default Home;
+
+
+.............................................................................................................................
+.............................................................................................................................
+src-->services-->post-service.js:-
+
+import { myAxious, privateAxious } from "./helper";
+
+export const createPost=(postData)=>{
+  console.log('the posted data' + postData);
+  return privateAxious.post('/api/ReactJsApis/PostContentDetails',postData).then((response)=>response.data);
+}
+ 
+//get all posts
+//All get posts apis are public so use "myaxios" instead of privateAxious
+
+export const loadAllPosts=()=>{
+  return myAxious.get('/api/ReactJsApis/getAllposts').then(response=>response.data); 
+}
+
+
+.....................................................................................................................
+.....................................................................................................................
+src-->components-->Post.jsx:- to show the single post
+-->we will return a <Card></Card> from here to server.
+
+
+import React from 'react'
+import { Button, Card, CardBody, CardText } from 'reactstrap'
+
+function Posts({ post = { Title: "This is Default Post Title", Content: "This is Default Content" } }) {
+  return (
+    <Card className='border-0 shadow-sm mb-3'>
+      <CardBody>
+        <h1>{post.Title}</h1>
+
+        {/* No need for <p> tag here, CardText already renders a <p> */}
+        {/* <CardText>{post.Content}</CardText> */}
+{/* if we want to display only 10 charcaters */}
+  <CardText>{post.Content.substring(0,30)}...</CardText>
+        <div>
+          <Button>Read More..</Button>
+        </div>
+      </CardBody>
+    </Card>
+  );
+}
+
+export default Posts;
+
+
+

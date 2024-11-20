@@ -1,0 +1,7 @@
+className="wrapper my-3" :- for margin
+className="wrapper ms-2" :- for margin start(marging-left)
+className="wrapper me-2" :- for margin end(marging-right)
+className='mt-2'   :margin top 2
+className='px-4'   :- for padding
+//.................................................
+

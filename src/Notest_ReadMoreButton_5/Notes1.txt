@@ -1,0 +1,102 @@
+Q1.How to open a component on read more button click?
+Ans:-
+Step 1:- create a page name PostPage.jsx under pages
+PostPage.jsx
+________________________
+
+import React from 'react'
+import Base from '../components/Base'
+const PostPage=()=> {
+  return (
+    <Base>
+      <div>
+      <h2>This is POST Page</h2>
+    </div>
+    </Base>
+  )
+}
+export default PostPage
+
+
+
+step 2:- Add this in App.js file
+
+import PostPage from './pages/PostPage';
+
+ <Route path='/Post' element={<PostPage/>} />  // i have made this public url
+
+step 3:- create a link from readmore.. link to PostPage.jsx in Post.jsx page so.
+
+Post.jsx:-
+
+ <Link to={'/Post'} >Read More..</Link>
+
+OR
+
+  <Link className='btn btn-secondary border -0' to={'/Post'} >Read More..</Link>
+
+
+
+
+Q2?.How to Access Id from url, using useParams() Hook?
+Ans:-
+
+
+App.js:-
+________________________
+
+  <Route path='/Post/:Id' element={<PostPage/>} />
+
+
+
+Posts.jsx:-
+________________________
+
+
+import React from 'react'
+import { Link } from 'react-router-dom';
+import { Button, Card, CardBody, CardText } from 'reactstrap'
+
+function Posts({ post = { Title: "This is Default Post Title", Content: "This is Default Content" } }) {
+  return (
+    <Card className='border-0 shadow-sm mb-3'>
+      <CardBody>
+        <h4>{post.Title}</h4>
+        {/* <CardText>{post.Content}</CardText> */}
+  <CardText dangerouslySetInnerHTML={{ __html:post.Content.substring(0,60)+'..'}}>
+    {/* {post.Content.substring(0,30)}... */}
+    </CardText>
+        <div>
+          <Link className='btn btn-secondary border -0' to={'/Post/'+post.Id} >Read More..</Link>
+        </div>
+      </CardBody>
+    </Card>
+  );
+}
+
+export default Posts;
+
+PostPage.jsx:-
+_______________________
+
+import React from 'react'
+import Base from '../components/Base'
+import { useParams } from 'react-router-dom'
+const PostPage=()=> {
+
+  const {Id}=useParams()
+
+  return (
+    <Base>
+      <div>
+      <h2>This is POST Page</h2>
+      <h3>{Id}</h3>
+    </div>
+    </Base>
+  )
+}
+export default PostPage
+
+
+
+

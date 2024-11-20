@@ -1,0 +1,88 @@
+//check this code to understand how name textbox value is passing to java script and storing using usState and useEffect based on object.
+
+Ex:-
+
+
+import { Card, CardBody, CardHeader, Container, Form,FormGroup,Label,Input,Button, Row,Col } from "reactstrap";
+import Base from "../components/Base";
+import { useEffect, useState } from "react";
+
+const Signup=()=>{
+
+  const [data,setData]=useState({name:'',email:'',password:'',about:''})
+  const [error,setError]=useState({errors:{},isError:false});
+  
+useEffect(()=>{
+console.log(data);
+},[data]);
+
+const handleChange=(event)=>{
+setData({...data,name:event.target.value})
+//this means:- first ...data is creating a shallow copy of data(default data with const [data,setData]) using spread operator,and changing name value (from (name:event.target.value))to ...data
+
+//and when ...data is set using setData function
+//and by  const [data,setData] =>setData sets the data(data from ...data) to data 
+//and when comes to useEffect it checks [data] which is changed ,so it rerenders
+//everytime when [data] will change it will rerender(based on data).
+//still this will work for name only.
+//next we will bind all the fields together.
+
+}
+
+  return (
+    <Base>
+       <Container>
+         <Row className="mt-4">
+           <Col sm={{size:6,offset:3}}>
+           <Card color="black" inverse>
+           <CardHeader>
+            <h3 style={{color:"blue"}}>SignUp</h3>
+           </CardHeader>
+<CardBody>
+  {/* creating form */}
+  <Form>
+    <FormGroup>
+      {/* for name */}
+      <Label for="name"  >Enter Name:- </Label>
+      <Input type="text" placeholder="Enter Here" id="name" onChange={(e)=>handleChange(e)}  ></Input>
+    </FormGroup>
+{/* for email */}
+<FormGroup>
+      <Label for="email">Enter Email:- </Label>
+      <Input type="email" placeholder="Enter Here" id="email"></Input>
+    </FormGroup>
+
+{/* for password */}
+<FormGroup>
+      <Label for="password">Enter Password</Label>
+      <Input type="password" placeholder="Enter Here" id="password"></Input>
+    </FormGroup>
+
+
+{/* for text area About */}
+<FormGroup>
+      <Label for="about">About</Label>
+      <Input type="textarea" style={{height:"100px"}} placeholder="Enter Here" id="about"></Input>
+    </FormGroup>
+
+<Container className="text-center">
+  <Button outline color="light" className="me-2" >Register</Button>
+   <Button  outline color="secondary" type="reset" >Reset</Button>
+</Container>
+
+
+  </Form>
+</CardBody>
+      </Card>
+           </Col>
+         </Row>
+       </Container>
+
+
+
+
+    </Base>
+  )
+}
+
+export default Signup;

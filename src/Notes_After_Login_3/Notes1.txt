@@ -1,0 +1,96 @@
+Notes:-
+//*******************************************************************************************************
+//*******************************************************************************************************
+1=>In react we are using react-router dom(  "react-router-dom": "^6.27.0",) ,we are using version 6. something
+but "Before this version, private routes were managed in a different way."
+2.But after 6.something version it manages in diffrent way.
+3.we will use conditional based routing,if this is true then this rout,if that is true then that route.
+//*****************************************************************************
+//*****************************************************************************
+4.public route and private route?
+Ans:-public route:-outer route like we are clicking on about button or signup button.
+     private route:-after login route is called private route.
+
+5.rfce (react functional component export),p>lorem50
+Ans:-1. type (rfce) in any js file it will return a function like given below:-
+import React from 'react'
+function Userdashboard() {
+  return (
+    <div>
+      
+    </div>
+  )
+}
+export default Userdashboard
+
+2.p>lorem50 :- it will print a lorem paragraph by just entering this 
+
+//*******************************************************************************************************
+//*******************************************************************************************************
+6.Steps to Create Userdashboard and applying Privateroute after login?
+Ans:-
+step 1:-
+create Userdashboard.jsx:-
+
+import React from 'react'
+
+const  Userdashboard=()=> {
+  return (
+    <div>
+      <h3>  Welcome to User Dashboard!!</h3>
+
+    </div>
+  )
+}
+
+export default Userdashboard
+
+
+step 2:- changes in App.js
+
+import Privateroute from './components/Privateroute';
+import Userdashboard from './pages/Userdashboard';
+
+ <Route path='/user' element={<Privateroute/>}>
+    <Route path="dashboard" element={<Userdashboard/>}  />
+    </Route>
+Note:- if we use a Privateroute component and we use another component under this,then it will be treated as private route, and with the help of <Outlet> under Privateroute component, it will show.
+
+
+step 3:- create Privateroute.jsx under component
+import React from 'react'
+import { Outlet } from 'react-router-dom'
+
+const Privateroute=()=> {
+    let loggedIn=false;
+if(loggedIn)
+{
+   return <Outlet/>
+}
+else
+{
+return "user is not logged in!!";
+}
+}
+
+  export default Privateroute
+
+Note:- without Outlet we cant be able to see the dahboard(Userdashboard) component or middle component between Privateroute( <Route path='/user' element={<Privateroute/>}>) ,check given code:-
+
+
+ <Route path='/user' element={<Privateroute/>}>
+    <Route path="dashboard" element={<Userdashboard/>}  />
+    </Route>
+
+
+Note:-simply we got that ,first- we will create Privateroute.jsx and in this we will return <Outlet>
+second-we will create Userdashboard.jsx for showing 
+third- we will set route setting in app.js,remember all the Userdashboard etc. will be under Privateroute component like given below:-
+
+ <Route path='/user' element={<Privateroute/>}>
+    <Route path="dashboard" element={<Userdashboard/>}  />
+    </Route>
+
+
+//*******************************************************************************************************
+//*******************************************************************************************************

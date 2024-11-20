@@ -1,0 +1,142 @@
+//**************************************************************************************************************
+//**************************************************************************************************************
+//**************************************************************************************************************
+====>Responsive Navbar in React js
+step 1:- search in google:- reactstrap navbar -->https://reactstrap.github.io/-->
+step 2:- copy code from here and paste this into your component
+
+CustomeNavbar.jsx
+__________________________________________________________
+import React, { useState } from 'react';
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  NavbarText,
+} from 'reactstrap';
+
+function CustomeNavBar() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggle = () => setIsOpen(!isOpen);
+
+//The expression !isOpen returns the opposite boolean value of isOpen. If isOpen is true, it becomes false, and vice versa.
+//the value will be persisted with useState,and when we call toggle method (    <NavbarToggler onClick={toggle} />),
+//!isOpen ,this will check the persisted value of "isOpen" and make it true if false,if false then make this true.
+
+  return (
+    <div>
+    <Navbar expand={"lg"}>
+        <NavbarBrand href="/">reactstrap</NavbarBrand>
+        <NavbarToggler onClick={toggle} />
+        <Collapse isOpen={isOpen} navbar>
+          <Nav className="me-auto" navbar>
+            <NavItem>
+              <NavLink href="/components/">Components</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="https://github.com/reactstrap/reactstrap">
+                GitHub
+              </NavLink>
+            </NavItem>
+            <UncontrolledDropdown nav inNavbar>
+              <DropdownToggle nav caret>
+                Options
+              </DropdownToggle>
+              <DropdownMenu right>
+                <DropdownItem>Option 1</DropdownItem>
+                <DropdownItem>Option 2</DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem>Reset</DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </Nav>
+          <NavbarText>Simple Text</NavbarText>
+        </Collapse>
+      </Navbar>
+    </div>
+  );
+}
+
+export default CustomeNavBar;
+
+
+
+
+step 3:- use this in Base.jsx to create it into common header.
+
+import CustomeNavbar from "./CustomeNavBar";
+
+const Base = ({ title = "welcome to our website", children }) => {
+  return (
+    <div className="container-fluid">
+      <CustomeNavbar/>
+            {children}
+      <h1>This is our Footer</h1>
+    </div>
+  );
+};
+
+export default Base;
+
+
+
+Note:- 
+1.Use expand={"lg"} in Navbar tag so that if its bigger screen then it will expand fully and for smaller screen it be collapse.like given below:-
+ <Navbar expand={"lg"}>
+
+2.Avoid Refresh when click on href in menu:-
+import { NavLink as ReactLink } from 'react-router-dom';  //avoid page reload, when we click on Home,Login,Or Signup
+use:-
+            <NavItem>
+              <NavLink tag={ReactLink} to="/About">About</NavLink>
+            </NavItem>
+
+//this will not refresh the page.
+
+Not:-
+ {/* <NavItem>
+              <NavLink href="/About/">About</NavLink>
+            </NavItem> */}
+
+//this will Refresh the page            
+
+//**************************************************************************************************************
+//**************************************************************************************************************
+//**************************************************************************************************************
+
+
+Note:-
+======================================1.For Fast working
+1.we cant use <div class="container"></div> in jsx ,we use <div className="container"></div>,
+becoz class is reserved keyword in react.
+
+======================================>2.Configure Emmet for JSX in VSCode
+step 1:- go to setting in cs code:-
+step 2:- go to open setting(json) [in right corner of vs code ]-->paste this given code in the last of the json
+
+ "emmet.includeLanguages": {
+     "javascript": "javascriptreact"
+ },
+ "emmet.syntaxProfiles": {
+     "javascript": "jsx"
+ }
+
+step 3:-then use div.container+enter then it will print?
+<div class="container">
+</div>
+or 
+div.container>div.row>div.col-md-4*3>div.card>div.card-body>p +enter
+
+
+===================================>Install ES7+ React/Redux/React-Native snippets
+install "ES7+ React/Redux/React-Native snippets" from Extensions
+

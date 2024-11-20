@@ -1,0 +1,79 @@
+//Shallow copy and Deep Copy
+_____________________________________________________
+The spread operator (...data) creates a shallow copy of the object. Let's explore the differences between shallow copy and deep copy, along with examples to help clarify.
+
+Shallow Copy vs. Deep Copy
+Shallow Copy:
+
+A shallow copy of an object creates a new object, but it copies only the references to nested objects, not the actual nested objects themselves.
+This means that if the original object contains references to other objects, the shallow copy will reference those same nested objects.
+Deep Copy:
+
+A deep copy creates a new object and recursively copies all nested objects, so that the new object is completely independent of the original.
+Changes to nested objects in the copied object do not affect the original object.
+Examples
+Shallow Copy Example
+javascript
+Copy code
+const original = {
+    name: 'John',
+    details: {
+        age: 30,
+        location: 'New York'
+    }
+};
+
+// Creating a shallow copy
+const shallowCopy = { ...original };
+
+// Modifying the shallow copy
+shallowCopy.name = 'Doe'; // This changes only the name
+shallowCopy.details.age = 35; // This changes the age in the nested object
+
+console.log(original); // { name: 'John', details: { age: 35, location: 'New York' } }
+console.log(shallowCopy); // { name: 'Doe', details: { age: 35, location: 'New York' } }
+Explanation:
+
+Changing shallowCopy.name only affects the name property.
+However, changing shallowCopy.details.age also changes original.details.age because details is a nested object referenced by both original and shallowCopy.
+Deep Copy Example
+To create a deep copy, you can use a method like JSON.parse(JSON.stringify()), or libraries like Lodash. Here’s an example using JSON:
+
+javascript
+Copy code
+const original = {
+    name: 'John',
+    details: {
+        age: 30,
+        location: 'New York'
+    }
+};
+
+// Creating a deep copy
+const deepCopy = JSON.parse(JSON.stringify(original));
+
+// Modifying the deep copy
+deepCopy.name = 'Doe'; // This changes only the name
+deepCopy.details.age = 35; // This changes the age in the nested object
+
+console.log(original); // { name: 'John', details: { age: 30, location: 'New York' } }
+console.log(deepCopy); // { name: 'Doe', details: { age: 35, location: 'New York' } }
+Explanation:
+
+Here, changing deepCopy.name does not affect original.name.
+Also, changing deepCopy.details.age does not affect original.details.age, because details was deeply copied.
+Summary
+Shallow Copy:
+
+Copies the top-level properties.
+Nested objects are shared references.
+Use ...data to create a shallow copy.
+Deep Copy:
+
+Copies all levels of nested objects.
+No shared references.
+Use methods like JSON.parse(JSON.stringify(data)) or libraries for deep copying.
+When to Use Each
+Shallow Copy: When you are dealing with flat objects or when you know that the nested objects will not change or do not need to be independent.
+Deep Copy: When you need to ensure that modifications to the copied object do not affect the original object, especially when dealing with nested data structures.
+This distinction is crucial in React and state management, as it helps avoid unintended side effects when updating state.

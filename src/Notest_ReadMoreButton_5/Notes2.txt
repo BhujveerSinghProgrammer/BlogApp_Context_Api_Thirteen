@@ -1,0 +1,267 @@
+Q1.?How to implement ReadMore.. full code.?
+Ans:- 
+-->first we load data on NewFeed.jsx page--> 
+-->and then create a page/component "Post.jsx" -->
+-->and loop through this in "NewFeed.jsx" like given below-->
+
+         {postContent?.Contents?.map((post) => (
+            <Posts post={post} key={post.Id} />
+          ))}
+-->and create a ReadMore button in Post.jsx component.
+-->Redirect from readmore to the new component name "PostPage.jsx"
+...................................................................
+
+Codes:-
+
+
+step 1:-
+
+
+NewFeed.jsx:-
+_______________________
+
+import React, { useState, useEffect } from 'react';
+import { loadAllPostsByPageNumberandPageSize } from '../services/post-service';
+import { Row, Col, Pagination, PaginationItem, PaginationLink, Container } from 'reactstrap';
+import Posts from './Posts';
+import { toast } from 'react-toastify';
+
+function NewFeed() {
+  const [postContent, setPostContent] = useState({
+    Contents: [],
+    LastPage: 0,
+    PageNumber: 1,  // Start at page 1 (1-based)
+    PageSize: 3,   // Default page size
+    TotalElements: 0,
+    TotalPages: 0
+  });
+   
+  // Fetch paged posts when the page is first loaded
+  useEffect(() => {
+    loadAllPostsByPageNumberandPageSize(postContent.PageNumber, postContent.PageSize)
+      .then((data) => {
+        setPostContent(data);
+         console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error('Error in Loading Posts');
+      });
+  }, []); // Only runs on component mount
+
+  // Handle page change
+  const changePage = (pageNumber) => {
+    if (pageNumber < 1 || pageNumber > postContent.TotalPages) return; // Do nothing if out of bounds
+
+    loadAllPostsByPageNumberandPageSize(pageNumber, postContent.PageSize)
+      .then((data) => {
+        setPostContent(data);  // Update with new page data
+        window.scroll(0,0); /// to up the scroll
+      })
+      .catch((error) => {
+        toast.error('Error in Loading Posts Pagewise');
+      });
+  };
+
+  return (
+    <div className="container-fluid">
+      <Row>
+        <Col md={{ size: 10, offset: 1 }}>
+          <h3>Blogs Count ({postContent?.TotalElements})</h3>
+
+          {postContent?.Contents?.map((post) => (
+            
+            <Posts post={post} key={post.Id} />
+          ))}
+
+
+
+          {/* Pagination component */}
+          <Container className="text-center mt-0">
+            <Pagination size='sm' >
+              {/* Previous button */}
+              <PaginationItem disabled={postContent.PageNumber === 1}>
+                <PaginationLink previous onClick={() => changePage(postContent.PageNumber - 1)} >
+                  Previous
+                </PaginationLink>
+              </PaginationItem>
+
+              {/* Page number buttons */}
+              {[...Array(postContent.TotalPages)].map((_, index) => (
+                <PaginationItem
+                  key={index}
+                  onClick={() => changePage(index + 1)}  // Page numbers should be 1-based
+                  active={index + 1 === postContent.PageNumber}
+                >
+                  <PaginationLink>{index + 1}</PaginationLink>
+                </PaginationItem>
+              ))}
+
+              {/* Next button */}
+              <PaginationItem disabled={postContent.PageNumber === postContent.TotalPages}>
+                <PaginationLink next onClick={() => changePage(postContent.PageNumber + 1)}>
+                  Next
+                </PaginationLink>
+              </PaginationItem>
+            </Pagination>
+          </Container>
+
+
+
+        </Col>
+      </Row>
+    </div>
+  );
+}
+
+export default NewFeed;
+
+
+step 2:-
+
+
+
+
+
+Posts.jsx:-
+_______________________
+
+import React from 'react'
+import { Link } from 'react-router-dom';
+import { Button, Card, CardBody, CardText } from 'reactstrap'
+
+function Posts({ post = { Title: "This is Default Post Title", Content: "This is Default Content" } }) {
+  return (
+    <Card className='border-0 shadow-sm mb-3'>
+      <CardBody>
+          <Link to="/">Home</Link> /(<Link to=""> {post.CategoryName}</Link>)
+ <CardText>
+  Posted By <b style={{color:'Green'}}>{post.name}</b> on <b style={{color:'Orange'}} >{new Date(post.Doe)?.toLocaleDateString()}</b>
+</CardText>
+        <h4>{post.Title}</h4>
+      
+        {/* <CardText>{post.Content}</CardText> */}
+  <CardText dangerouslySetInnerHTML={{ __html:post.Content.substring(0,60)+'..'}}>
+    {/* {post.Content.substring(0,30)}... */}
+    </CardText>
+        <div>
+          <Link className='btn btn-secondary border -0' to={'/Post/'+post.Id} >Read More..</Link>
+        </div>
+      </CardBody>
+    </Card>
+  );
+}
+
+export default Posts;
+
+
+
+
+
+step 3:-
+  <Route path='/Post/:Id' element={<PostPage/>} />
+
+
+and   post-service.js:-
+
+
+
+export const loadPostsById=(Id)=>{
+  return myAxious.get(`/api/ReactJsApis/getpostById?Id=${Id}`).then(response=>response.data); 
+}
+
+
+
+
+
+  step 4:-
+  PostPage.jsx:-
+  ________________________
+
+
+
+import React, { useEffect, useState } from 'react'
+import Base from '../components/Base'
+import { Link, useParams } from 'react-router-dom'
+import { loadPostsById } from '../services/post-service'
+import { toast } from 'react-toastify';
+import { Card, CardBody, CardText, Col, Container, Row } from 'reactstrap';
+
+const PostPage=()=> {
+  const {Id}=useParams()
+  const [post,setPost]=useState(null);
+
+  useEffect(() => {
+   loadPostsById(Id).then((data) => {
+        console.log('Initial Data', data);
+        setPost(data);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error('Error in Loading Posts');
+      });
+  }, []); // Only runs on component mount
+
+  return (
+    <Base>
+      <Container className='mt-2 mb-2'>
+     <Link to="/">Home</Link> /{post && (<Link to=""> {post.Title}</Link> )}
+<Row>
+  <Col md={
+    {
+      size:12
+    }
+  }
+>
+   <Card className='mt-3 ps-2'>
+
+{
+  (post) && 
+  
+  (
+  <CardBody>
+
+
+ <CardText>
+  Posted By <b style={{color:'Green'}}>{post.name}</b> on <b style={{color:'Orange'}} >{new Date(post.Doe)?.toLocaleDateString()}</b>
+</CardText>
+<CardText className='mt-2 mb-1'>
+  <span className='text-muted'>
+    {post.CategoryName}
+  </span>
+</CardText>
+<div className="divider" style={{width:'100%',height:'1px',background:'green', marginBottom:'3px'}} >
+
+</div>
+
+ <CardText>
+  <h4><b>{post.Title}</b></h4>
+</CardText>
+
+<div className='image-container mt-2 mb-3' style={{maxwidth:'40%', height:'10%'}} >
+      <img src={'https://nulm.gov.in/images/SlideImage/'+post.ImageName} alt=''/>
+</div>
+
+<CardText dangerouslySetInnerHTML={{__html:post.Content}}   className='mt-2'  >
+
+</CardText>
+
+</CardBody>
+  )
+}
+
+     </Card>
+</Col>
+</Row>
+</Container>
+  
+    </Base>
+  )
+}
+export default PostPage
+
+...................................
+
+
+
+

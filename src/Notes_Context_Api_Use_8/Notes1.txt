@@ -1,0 +1,175 @@
+Q1.What is Context Api?
+
+Ans:-Context provide a way to pass data through the component tree without having to pass props down manually at every level.
+Ex:-we creates lot of component to create react application,and there is a heirarchy in the applicaton,in this heirarchy we have a top level component and in this we have component 1 ,2 and 3 etc and when we pass the date from one component to another then we use props(or props drilling).
+with the help of props we pass the data from one component to another.but if we pass the data in deep level or having lots of components in application then to understand the heirarchy some problems occur. to overcome this situation we have Context Api,
+->In context api we create a global data that can be used for all the components.it helps us to create global state.
+->Redux also solve this problem.Redux also manage the states in your application.But Redux is more complex than Context Api.
+
+-->Now we can also sync our local storage data to UserProvider for login purpose and can use that in all the pages.
+ 
+
+Q2.Steps to use Context Api in your react application?
+Ans:-
+Steps:1.Create Context
+
+context=CreateContext(null);
+Provider-->Provides
+Consumer-->Consumes
+
+step 2:-wrap our components in Provider.
+<context.Provider value={user} >
+      children
+</context.Provider>
+
+step 3:-Consume the value with the help of Consumer.
+<context.Consumer>
+{
+  (value)=>
+  (
+    <div>
+          {value.name}
+    </div>
+  )
+}
+<context.Consumer>
+
+....................................................................................................................................................................
+....................................................................................................................................................................
+
+Practical steps(Type 1):- 
+step 1=>create a folder context
+step 2=>under this create a file name userContext.js
+userContext.js:-
+const { createContext } = require("react");
+
+const userContext=createContext(null);
+
+export default userContext;
+
+
+step 3==>create a UserProvider.jsx file
+UserProvider.jsx:-
+
+
+import React, { useState } from 'react'
+import userContext from './userContext'
+function UserProvider({children}) {
+  const[user,setUser]=useState({
+    name:'Bhujveer'
+  });
+
+  return (
+   <userContext.Provider value={user}>
+    {children}
+   </userContext.Provider>
+  )
+}
+
+export default UserProvider
+
+step 4:- put BrowserRouter under <UserProvider> in App.js
+App.js:-
+
+
+
+import UserProvider from './context/UserProvider';
+
+<UserProvider>
+
+
+  <BrowserRouter>
+  <ToastContainer position='bottom-center' />
+
+   <Routes>
+  <Route path='h' element="<h1>this is home page</h1>" />
+   <Route path='/' element={<Home/>} />
+  <Route path='home' element={<Home/>} />
+  <Route path='/login' element={<Login/>} />
+  <Route path='/signup' element={<Signup/>} />
+  <Route path='/about' element={<About/>} />
+  <Route path='/services' element={<Services/>} />
+  <Route path='/contactus' element={<ContactUs/>} />
+  <Route path='/Post/:Id' element={<PostPage/>} />
+
+{/* // for private route */}
+    <Route path='/user' element={<Privateroute/>}>
+    <Route path="dashboard" element={<Userdashboard/>}  />
+     <Route path="profile" element={<Profileinfo/>}  />
+    </Route>
+
+   </Routes>
+  </BrowserRouter>
+        </UserProvider>
+
+step 5:-Now Consuming in About.jsx file and Service.jsx file:-
+About.jsx:-
+
+
+import Base from "../components/Base";
+import userContext from "../context/userContext";
+
+
+const About=()=>{
+   return(
+<userContext.Consumer>
+  {(user)=>
+  (
+          <Base>
+          <h4 style={{color:"blue"}}> This is our About Page with Header and Footer</h4>
+                <h6  style={{color:"red"}} >Welcome user:{user.name}</h6>
+          </Base>
+   
+  )
+
+  }
+</userContext.Consumer>
+
+  );
+};
+
+export default About;
+
+
+
+or or or or 
+
+
+
+Practical steps(Type 2):- 
+we are using this in our profile info pages.
+
+user-routes-->Profileinfo.jsx
+
+step 1:-
+
+import userContext from '../../context/userContext'; //this line
+function Profileinfo() {
+
+  const user=useContext(userContext);  //this line
+
+  return (
+    <Base>
+       <Container className='mt-5 mb-5'>
+       <Link to="/">Home</Link>
+<Row>
+<Col md={{size:12}}>
+   <Card>
+      <CardBody>
+ <CardText>
+            <p style={{color:'red'}} >Welcome {user.name}</p> //this line
+</CardText>
+      </CardBody>
+     </Card>
+</Col>
+</Row>
+</Container> 
+    </Base>
+  )
+}
+export default Profileinfo
+
+
+
+
+

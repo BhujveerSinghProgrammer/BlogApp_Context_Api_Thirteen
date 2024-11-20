@@ -1,0 +1,18 @@
+//*********************************************************************************************
+TwoWay DataBinding:-
+
+OneWay:-
+const handleChange=(event,property)=>{
+  //dynamic setting the values
+setData({...data,[property]:event.target.value})
+}
+
+
+
+TwoWay:-
+
+//we use  value={data.about} in our Input(textbox),because it will be called two way data binding,means if data.name changes then input value(textbox) will change.
+
+<Input type="textarea" style={{height:"100px"}} value={data.about} placeholder="Enter Here" id="about" onChange={(e)=>handleChange(e,'about')} ></Input>
+
+//***************************************************************************************

@@ -1,0 +1,96 @@
+//*****************************************************************************************************************************************
+//****************************************************************************************************************************************
+1.//invalid={error.errors?.response?.data?.Data?.name?true:false}  
+Ans:- after any object "?" means ,if i get null then undefined else objects value,
+ just like this(response?) if we are getting response null then undefined will be returned else response will be returned
+actually it will break with undefined if we use "?" after an object.
+its called null safe operator.
+
+//*****************************************************************************************************************************************
+//****************************************************************************************************************************************
+
+ 2.//{error.errors?.response?.data?.Data?.name?true:false}
+ Ans:-it means if we have value in "error.errors?.response?.data?.Data?.name?" then invalid=true else invalid=false.
+
+//*****************************************************************************************************************************************
+//****************************************************************************************************************************************
+
+ 3.//to show an error property wise?
+ Ans:-
+
+ step 1:-
+
+ const [data,setData]=useState({name:'',email:'',password:'',about:''})
+  const [error,setError]=useState({errors:{},isError:false});
+
+//start:-this is not working properly so leave this
+if(error.isError)
+ {
+   console.log(error);
+   toast.error("form data is invalid!!correct first and then submit");
+   setError({...error,isError:false});
+   return;
+ }
+//end
+
+//and set the error coming from api:-
+
+  //call server api to send the data
+signUp(data).then((resp)=>{
+  console.log(resp);
+  console.log('success log');
+  // toast.success("user is registered successfully!!! user id is  "+resp.id);
+  toast.success(resp.mgs);
+  
+  setData({
+    name:'',email:'',password:'',about:''
+  })
+setError({
+  errors:{},
+  isError:false
+})
+
+}).catch((error)=>{
+  console.log(error);
+  console.log("error log");
+  toast.error("user is not registered !!!")
+  //HANDLE ERRORS IN PROPER WAY!!
+setError({
+  errors:error,
+  isError:true
+})
+})
+}
+
+ step 2:- check the message with empty value returning to the console from web api and then set in your input field like given below:-
+  invalid={error.errors?.response?.data?.Data?.name?true:false} 
+
+full code:-
+   <Input type="text" placeholder="Enter Here" id="name" onChange={(e)=>handleChange(e,'name')} value={data.name}
+     invalid={error.errors?.response?.data?.Data?.name?true:false}  ></Input>
+
+step 3:- then take a <FormFeedback> under the <FormGroup> like given below:-
+<FormGroup>
+      {/* for name */}
+      <Label for="name"  >Enter Name:- </Label>
+      <Input type="text" placeholder="Enter Here" id="name" onChange={(e)=>handleChange(e,'name')} value={data.name}
+       invalid={error.errors?.response?.data?.Data?.name?true:false}  ></Input>
+
+<FormGroup>
+ <FormFeedback>
+  { error.errors?.response?.data?.Data?.name } 
+</FormFeedback>
+    </FormGroup>
+
+//it will show the error down to textbox and also show the error from react-tostify:-
+Note:- 1. invalid={error.errors?.response?.data?.Data?.name?true:false} = for message
+       2. value={data.name} = for two way binding
+       3. if api is not reachable then "  toast.error("user is not registered !!!")" will be executed in catch like given below:-
+  .catch((error)=>{
+  toast.error("user is not registered !!!")
+
+
+
+//*****************************************************************************************************************************************
+//****************************************************************************************************************************************
+

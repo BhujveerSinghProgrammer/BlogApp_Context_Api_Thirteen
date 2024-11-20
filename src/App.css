@@ -1,0 +1,11 @@
+body
+{
+  background-color: whitesmoke !important;
+}
+footer
+{
+  margin-top: 30px;
+  padding: 2px;
+  height: 40px;
+  background-color: green;
+}

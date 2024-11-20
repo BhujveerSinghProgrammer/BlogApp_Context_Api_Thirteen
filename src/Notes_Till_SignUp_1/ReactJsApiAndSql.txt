@@ -1,0 +1,179 @@
+
+create procedure sp_InsertRegisterDetails
+@name varchar(100)=null,
+@email varchar(100)=null,
+@password varchar(100)=null,
+@about varchar(100)=null,
+@Output varchar(20) null output   
+as
+begin
+insert into tblRegister values(@name,@email,@password,@about,getdate()) 
+set @Output=@@IDENTITY
+end
+
+
+create table tblRegister(Id int primary key identity,name varchar(100),email varchar(100),password varchar(100),about varchar(250),doe datetime)
+select * from tblRegister
+
+//******************************************************************************************************************************************************
+//******************************************************************************************************************************************************
+1. registration/signup api:-
+
+
+Web Api Url:- http://localhost:52065/api/ReactJs/register
+Method Type:-POST
+Method Name:-register
+Username:- Blogapp@username
+Password:- fa2aab64acebfcbe88ef9b0ee7d2ce2983dd0edb3794eee760cc8c6b42faac56  
+
+Note:-
+
+(Firstly i am converting password -  Nic@123 to SHA256 (fa2aab64acebfcbe88ef9b0ee7d2ce2983dd0edb3794eee760cc8c6b42faac56) from given code 
+ and giving this password(fa2aab64acebfcbe88ef9b0ee7d2ce2983dd0edb3794eee760cc8c6b42faac56) to the client,not giving Nic@123 directly)
+  
+public static string ComputeSha256Hash(string rawData)
+            {
+                // Create a SHA256  //This is one way encryption,we can not decrypt 
+                using (SHA256 sha256Hash = SHA256.Create())
+                {
+                    // ComputeHash - returns byte array  
+                    byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                    // Convert byte array to a string   
+                    StringBuilder builder = new StringBuilder();
+                    for (int i = 0; i < bytes.Length; i++)
+                    {
+                        builder.Append(bytes[i].ToString("x2"));
+                    }
+                    return builder.ToString();
+                }
+}
+
+steps: 
+
+Postman-->
+select method type=Post-->go to Body-->Select raw-->select json -->
+write the given input json in body
+-->
+{
+    "name":"Bhujveer Singh",
+    "email":"bhujveer3752@gmail.com",
+    "password":"Bhuj#1234",
+    "about":"I am From New Delhi India"
+}
+and 
+
+Postman-->go to Authorization-->Select Type=Basic Auth-->Put Username and Password (give password SHA256 encrypted key) -->Send
+
+
+Ouput:-
+
+[
+    {
+        "mgs": "user registered successfully your unique id is=6",
+        "Error": "Ok",
+        "ErrorCode": ""
+    }
+]
+
+
+
+if userid or password is wrong then 
+output will be:-
+[
+    {
+        "mgs": "",
+        "Error": "User Credentials Not Matched!!Please Enter Correct UserId and Password!!!!",
+        "ErrorCode": "420"
+    }
+]
+
+
+
+//******************************************************************************************************************************************************
+//******************************************************************************************************************************************************
+Note:- when you will hit the url from react js application ,cors Error will occur like given below:-
+
+"Access to XMLHttpRequest at 'http://localhost:52065/api/ReactJs/registerWithoutPassword' from origin 'http://localhost:3000' 
+has been blocked by CORS policy: Response to preflight request doesn't pass access control check:
+No 'Access-Control-Allow-Origin' header is present on the requested resource."
+
+To overcome this sitiuation:-
+1.we can enable CORS for all the apis
+
+step 1:-
+Install-Package Microsoft.AspNet.WebApi.Cors
+
+step 2:-
+using System.Web.Http.Cors;
+
+  public static void Register(HttpConfiguration config)
+        {
+            // Enable CORS for all the api's
+            var cors = new EnableCorsAttribute("http://localhost:3000", "*", "*");  // Note:-this is our reactjs application port:- 3005
+            config.EnableCors(cors);
+            // 
+
+            config.Routes.MapHttpRoute(
+                  name: "DefaultApi",
+                  routeTemplate: "api/{controller}/{action}/{id}",
+                  defaults: new { id = RouteParameter.Optional }
+              );
+
+            // Adding formatter for Json  
+            config.Formatters.JsonFormatter.MediaTypeMappings.Add(
+                new QueryStringMapping("type", "json", new MediaTypeHeaderValue("application/json")));
+
+        }
+
+
+
+2.we can do this individualy(enable CORS for specific actions only)
+step 1:-
+Install-Package Microsoft.AspNet.WebApi.Cors
+
+step 2:-
+using System.Web.Http.Cors;
+
+        [HttpPost]
+        [ActionName("registerWithoutPassword")]
+        [EnableCors(origins: "http://localhost:3000", headers: "*", methods: "*")] // Note:-this is our reactjs application port:- 3005
+        public List<clsApplicantsOutput> registerWithoutPassword(clsApplicantsInputParameters objclsApplicantsInputParameters)
+        {
+
+        }
+3.or you can add code to global.asax file to overcome cors error:-
+global.asax:-
+
+protected void Application_BeginRequest()
+        {
+            // Allow specific origins
+            string origin = HttpContext.Current.Request.Headers["Origin"];
+
+            // Define allowed origins (for example purposes, replace with your actual URLs)
+            var allowedOrigins = new[]
+            {
+            "http://localhost:3000", // React app running on port 3000
+            "http://example.com" // Add more as needed
+           };
+
+            if (allowedOrigins.Contains(origin))
+            {
+                HttpContext.Current.Response.Headers.Add("Access-Control-Allow-Origin", origin);
+                HttpContext.Current.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+                HttpContext.Current.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            }
+
+            // Handle preflight requests
+            if (HttpContext.Current.Request.HttpMethod == "OPTIONS")
+            {
+                HttpContext.Current.Response.StatusCode = 200;
+                HttpContext.Current.Response.End();
+            }
+}
+
+
+
+//******************************************************************************************************************************************************
+//******************************************************************************************************************************************************
+

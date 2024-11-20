@@ -1,0 +1,4 @@
+//Login Page:-
+1.we will pass userid,password,key,then a token will be generated and for authentication we wil use this token.
+2.we will save the token to local storage,you can check ,
+  this data by just typing "localstorage" in console window or you can simply go to browser's storage option

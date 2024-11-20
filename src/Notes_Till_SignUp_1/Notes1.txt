@@ -1,0 +1,53 @@
+==========================================>//To use Bootstrap(reactstrap) in react way:-
+Step 1:-
+PS D:\JK\22October2024Tests\Projects\ReactJs\Blog\blogapp>
+npm install reactstrap 
+and
+npm install bootstrap
+Step 2:- //import Bootstrap in your App.js
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+==========================================>//To use reactstrap in your page:-
+App.js
+import { Button } from 'reactstrap';
+
+<Button color='success' >Click Here</Button>
+<Button color='warning' >Click Here</Button>
+
+==========================================>//How to Return jsx readable
+when you return jsx then:-
+
+Kindly use  return (, not
+return 
+(
+
+==========================================>//
+
+
+==========================================>//
+
+
+==========================================>//
+
+
+==========================================>//
+
+
+==========================================>//
+
+
+==========================================>//
+
+
+==========================================>//
+
+
+==========================================>//
+
+
+==========================================>//
+
+==========================================>//
+
+
+==========================================>//

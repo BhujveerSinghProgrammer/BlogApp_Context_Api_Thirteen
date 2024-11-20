@@ -1,0 +1,114 @@
+
+//**********************************************************************************************************
+//**********************************************************************************************************
+
+
+//How to call server api to send the data
+Ans:-
+1.install axios library:-   for server calling
+PS D:\SaturDay Work\LoginAndSignUpPageblogappFourth> npm install axios
+
+2.react-toastify        :-   for displaying messages(beautiful bessages)
+PS D:\SaturDay Work\LoginAndSignUpPageblogappFourth> npm install react-toastify
+
+
+//How to create connection with api?
+Ans:-
+step 1:- create a folder name:- service-->helper.js
+helper.js:-
+
+import axios from "axios";
+export const BASE_URL="http://localhost:52065";
+
+export const myAxious=axios.create({baseURL:BASE_URL,});
+
+
+step 2:- user-service.js:-
+
+import { myAxious } from "./helper";
+
+export const signUp=(user)=>{
+  return myAxious.post('/api/ReactJs/registerWithoutPassword',user).then((response)=>response.data);
+}
+
+
+step 3:- pages-->Signup.jsx
+
+import { signUp } from "../services/user-service";
+
+//submitting the form
+const submitForm=(event)=>
+{
+  event.preventDefault();//preventing bydefault behaviour of the form,otherwise page will be submitted and reload
+  console.log(data);
+  //data validation
+
+  //call server api to send the data
+signUp(data).then((resp)=>{
+  console.log(resp);
+  console.log('success log');
+}).catch((error)=>{
+  console.log(error);
+  console.log("error log");
+})
+}
+
+//**********************************************************************************************************
+//**********************************************************************************************************
+//How to use react-toastify for the messages!!
+Ans:-
+
+
+App.js:-
+
+  import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+
+
+
+
+
+   <BrowserRouter>
+
+
+
+  <ToastContainer /> // put this under BrowserRouter
+  
+
+
+   <Routes>
+  <Route path='h' element="<h1>this is home page</h1>" />
+   <Route path='/' element={<Home/>} />
+  <Route path='home' element={<Home/>} />
+  <Route path='/login' element={<Login/>} />
+  <Route path='/signup' element={<Signup/>} />
+  <Route path='/about' element={<About/>} />
+  <Route path='/services' element={<Services/>} />
+    <Route path='/contactus' element={<ContactUs/>} />
+
+   </Routes>
+  </BrowserRouter>
+
+
+SignUp.jsx:-
+
+import { toast } from "react-toastify";
+
+signUp(data).then((resp)=>{
+  console.log(resp);
+  console.log('success log');
+  toast.success("user is registered successfully!!!") // put this line here for message
+  setData({
+    name:'',email:'',password:'',about:''
+  })  // make all fields as blank
+
+
+}).catch((error)=>{
+  console.log(error);
+  console.log("error log");
+  toast.error("user is not registered !!!")  // put this line here for message
+})
+}
+
+
+//*********************************

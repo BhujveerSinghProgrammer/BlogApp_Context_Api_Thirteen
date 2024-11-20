@@ -1,0 +1,226 @@
+//****************************************************************************************************
+//****************************************************************************************************
+//if the user is logged in then we will show the logout on the page?
+Ans:-
+step 1:-
+
+CustomeNavBar.jsx:-
+
+import { isLoggedIn } from '../auth';
+import {CurrentUser} from '../auth';
+
+
+  const[login,setLogin]=useState(false);
+  const[user,setUser]=useState(undefined);
+
+  useEffect(()=>
+  {
+    setLogin(isLoggedIn())
+    setUser(CurrentUser())
+  },[login]
+  );
+
+  //Note:- useEffect is just like a function:- it will execute based on the value of [login],if value will change then it will setLogin and setUser again and again.
+  if we will not use [login] then this will be mounted only once.
+
+step 2:- we will use jsx code where we want to show the logout option if user is logged in,
+jsx code:-
+
+
+{
+  login && ( <NavItem>
+              <NavLink><Logout></Logout></NavLink>
+            </NavItem>)
+}
+Note:- it means that if the login from [login,setLogin] value is not null then bind this NavItem
+
+step 3:- if we also want to show the user details with logout option,means when we use two things together ,one is for logout and other is for user details show, then?
+ Note :- this is called fragement
+ <>
+ </> 
+
+we will put our code into this fragement like given below:-,
+
+          {
+     login && ( 
+               <>  // this is our fragement
+            <NavItem>
+              <NavLink>Logout</NavLink>
+            </NavItem>
+       <NavItem>
+              <NavLink>{user.email}</NavLink>
+            </NavItem>
+               </>  //this is our end of the fragement
+            )
+    }
+
+//if user is not logged in then ?
+{
+     !login && ( 
+           <>
+             <NavItem>
+              <NavLink tag={ReactLink} to="/Login">Login</NavLink>
+            </NavItem>
+
+                  <NavItem>
+              <NavLink tag={ReactLink} to="/Signup">Signup</NavLink>
+            </NavItem>
+      </>
+            )
+    }
+
+//****************************************************************************************************
+//****************************************************************************************************
+Q1.How to navigate to another component after login?
+Ans:- we will use "useNavigate" from react-router-dom like given below:-
+
+Login.jsx:-
+import { useNavigate } from "react-router-dom";
+const navigate=useNavigate();
+
+//call this like this:-
+navigate("/user/Userdashboard")
+
+
+Q2.how to import from same folder?
+Ans:- we use single . with / like given below:-
+
+import Base from "./Base"
+export default AddPost=()=>{
+return(
+  <div className="wrapper">
+    <Base>
+  <h1>This is Add Post Component!!</h1>
+    </Base>
+  </div>
+)
+}
+
+
+Q2.1.How to use npm stop in vs code?
+Ans:-
+
+Install kill-port globally with:
+npm install -g kill-port
+
+
+If you want a stop command for the future, add this to your package.json under scripts:
+ "stop": "kill-port 3000"
+
+
+Q3.?how to use textarea and static and dynamic dropdownlist in react js?
+Ans:-
+{/* TextArea */}
+            <div className="my-3">
+            <Label for="content">Post Content</Label>
+            <Input type="textarea" id="content" placeholder="Enter Here"
+            className="rounded-0"
+            style={{height:'200px'}}
+            />
+          </div>
+
+
+
+          
+{/* static dropdownlist */}
+
+  <div className="my-3">
+            <Label for="category">Post Category</Label>
+            <Input
+             type="select"
+             id="category"
+             placeholder="Enter Here"
+            className="rounded-0"
+            >
+              <option>
+                Programming
+              </option>
+
+              <option>
+                Bollywood
+              </option> 
+              
+               <option>
+                Mathematics
+              </option>  
+              
+              <option>
+                Physics
+              </option>
+
+            </Input>
+
+
+Q4.Note:-to Bind dynamic dropdownlist use given steps:-
+Ans:-
+
+step 1.created a category-service.js page:-
+
+category-service.js:-
+___________________
+import { myAxious } from "./helper";
+
+export const loadAllCategories=(user)=>{
+  return myAxious.get('/api/ReactJsApis/getCategories').then(response=>{return response.data})
+}
+
+
+
+step 2:- where we wanna bind use the code given below:-
+
+import {loadcategories} from "../services/category-service"
+import { useEffect } from "react";
+
+  const[categories,setCategories]= useState([]);
+
+  useEffect(()=>{
+    loadAllCategories().then((data)=>{
+      console.log(data);
+      setCategories(data);//this data would go to "categories" from  const[categories,setCategories],jo bhi function ke andar rakhte hai wo set ho jata hai.
+      
+    }).catch(error=>{
+      console.log(error);
+    })
+  },[])
+
+
+  //Note:-remember useEffect with [] means:- it will be executed on mounting phase only,doesnt have dependency.
+
+
+step 3:-
+ <div className="my-3">
+            <Label for="category">Post Category</Label>
+            <Input
+             type="select"
+             id="category"
+             placeholder="Enter Here"
+            className="rounded-0"
+            >
+{/* //dynamic binding */}
+{
+  categories.map((category)=>(
+<option value={category.Id} key={category.Id}>
+  {category.CategoryName}
+</option>
+  ))
+}
+
+
+            </Input>
+          </div>
+
+Note:- sample json api data given below:-
+[
+    {
+        "CategoryName": "Bollywood",
+        "Description": "Its a simple Categories"
+    },
+    {
+        "CategoryName": "Hollywood",
+        "Description": "Its a simple Categories"
+    },
+    {
+        "CategoryName": "Programming",
+        "Description": "Its a simple Categories"
+    }
+]

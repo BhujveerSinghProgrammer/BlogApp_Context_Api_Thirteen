@@ -1,0 +1,79 @@
+//FOR COMMENT we use?
+Ans:- {/* commented   */}
+
+//marging start and margin end?
+Ans:-
+
+className="ms-2"   //marging start 2 px(left se 2 px);
+className="me-4"   //margin end 4 px(right se 4 px);
+className="mt-4"   //margin top 4 px; 
+
+
+//Design Sample Layout:-
+Ans:-
+<Container>
+         <Row className="mt-4">
+           <col sm={{size:6,offset:3}}> 
+//iska matlab middle me size 6,aur 3 left and 3 right mein,just like ,col-md-3-->col-md-6-->col-md-3
+//iske middle mein <card></card> rakh sakte hain
+           </col>
+         </Row>
+      </Container>
+
+
+
+
+//if we want to use style in your page?
+ Ans:- <h1 style={{border:'1px solid red'}} >This is our Signup Page with Header and Footer</h1>
+style={{height:"100px"}}
+
+//How to Design Signup and Login Page?
+Ans:- we are using reactstrap to Design (https://reactstrap.github.io/)
+
+import { Card, CardBody, CardHeader, Container, Form,FormGroup,Label,Input } from "reactstrap";
+
+
+steps:- 
+1.take Card component
+<Card>
+</Card>
+
+2.inside card take CardHeader,CardBody,CardFooter
+
+<Card>
+<CardHeader>
+</CardHeader>
+<CardBody>
+
+</CardBody>
+<CardFooter>
+</CardFooter>
+</Card>
+
+
+4.inside card use Form--> FormGroup (in form group we take :- label and input)
+
+<Card>
+<CardHeader>
+</CardHeader>
+ <CardBody>
+  <Form>
+    <FormGroup>
+      <Label for="name">Enter Name:- </Label>
+      <input type="text" placeholder="Enter Here"></input>
+    </FormGroup>
+  </Form>
+</CardBody>
+<CardFooter>
+</CardFooter>
+</Card>
+
+
+//some card properties?
+Ans:-
+ <Card color="black" outline>  </card>
+ //iska matlab color black card ke border par dikhega bass.
+
+<Card color="black" inverse>  </card>
+ //iska matlab backgroud color black ho jayega pure card ka aur texts,and inputs color white rahega.
+ 
